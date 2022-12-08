@@ -44,10 +44,10 @@ fn main(){
                    t_m = caps.get(1).unwrap().as_str().parse::<u32>().unwrap();
                    c_n = caps.get(2).unwrap().as_str().parse::<u32>().unwrap();
                    t_n = caps.get(3).unwrap().as_str().parse::<u32>().unwrap();
-                   for i in 0..t_m{
-                    let item = vec[(c_n-1) as usize][0];
+                   for i in (1..t_m+1).rev(){
+                    let item = vec[(c_n-1) as usize][(i-1) as usize];
                     println!("{}",item);
-                    vec[(c_n-1) as usize].remove(0);
+                    vec[(c_n-1) as usize].remove((i-1) as usize);
                     vec[(t_n-1) as usize].insert(0,item);
                     
                    }
