@@ -8,61 +8,78 @@ where P: AsRef<Path>, {
     Ok(io::BufReader::new(file).lines())
 }
 
-fn is_max(arr:&Vec<u32>,ind:usize,n:&mut u32){
-    let vec1 = &arr[..ind];
-    let vec2 = &arr[ind..];
-    let max_value1 = vec1.iter().max();
-    let max_value2 = vec2.iter().max();
-    match max_value1 {
-        Some(max) if *max == *vec1.last().unwrap() => {
-                println!("{:?} has max as:{}",vec1,max);
-                *n+=1;
-            },
-        Some(_) => {},
-        None => {},
-    }
-    match max_value2{
-        Some(max) if *max == vec2[0] =>{
-            println!("{:?} has max as :{}",vec2,max);
-            *n+=1;
-        },
-        Some(_) => {},
-        None => {},
-    }
+fn is_max(arr:&Vec<Vec<u32>>){
+    let mut visible_trees  = 392;
+    for v in 1..(arr.len()-1){
+        let mut p = 0;
+        for j in  1..(arr.len()-1){
+            let mut right = 1;
+            //check right 
+            for k in j+1..99{
+                if arr[v][j]>arr[v][k]{
+                    right*=1;
+                }else{
+                    right*=0;
+                }
+            }
+            if right == 1{
+                p+=1;
+            }
+            let mut left = 1;
+
+            for b in 0..j{
+                if arr[v][j]>arr[v][b]{
+                    left *= 1;
+                }else{
+                    left*=0;
+                }
+            }
+            if left == 1{
+                p+=1
+            }
+            let mut top = 1;
+
+            for z in 0..v{
+                if arr[v][j]>arr[z][j]{
+                    top *= 1;
+                }else{
+                    top*=0;
+                }
+            }
+            if top == 1{
+                p+=1
+            }
+            let mut bottom = 1;
+            for d in v+1..99{
+                if arr[v][j] > arr[d][j]{
+                    bottom *= 1;
+                }else{
+                    bottom*=0;
+                }
+            }
+            if bottom ==1{
+                p+=1
+            }
+            if p > 0{
+                visible_trees = visible_trees + 1;
+                p = 0;
+            }
+            }
+        }
+        println!("{}",visible_trees)
+
 }
 
 fn main(){
-    let mut v_arr = vec![Vec::with_capacity(5);5];
-    let mut h_arr = vec![Vec::with_capacity(5);5];
+    let mut h_arr = vec![Vec::with_capacity(99);99];
     let mut lis_m = 0;
-    let mut n = 0;
     if let Ok(lines) = read_lines("./Inp_8.txt") {
         for line in lines {
-            let mut lis_n = 0;
             if let Ok(ip) = line{
                 for i in 0..ip.len(){
-                    v_arr[lis_n].push(ip.chars().nth(i).unwrap().to_digit(10).unwrap());
                     h_arr[lis_m].push(ip.chars().nth(i).unwrap().to_digit(10).unwrap());
-                    lis_n+=1;
                 }lis_m+=1;
             }
-        }
-        println!("Starting for vertical array\n");
-        for v in &v_arr[1..4]{
-            for i in 2..(v.len()-1){
-                is_max(&v,i,&mut n);
-                println!("{}",n)
-            }
-        };
-        println!("Starting for horizontal array\n");
-        for v in &h_arr[1..4]{
-            for i in 2..(v.len()-1){
-                is_max(&v,i,&mut n);
-                println!("{}",n)
-            }
-        };
-
-        v_arr.iter().for_each(|it| {
-        println!("{:?}", it);})
-    }
+        } 
+    }is_max(&h_arr);
 }
