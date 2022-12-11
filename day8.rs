@@ -9,6 +9,8 @@ where P: AsRef<Path>, {
 }
 
 fn is_max(arr:&Vec<Vec<u32>>){
+    /*
+    1st part ---->
     let mut visible_trees  = 392;
     for v in 1..(arr.len()-1){
         let mut p = 0;
@@ -67,6 +69,69 @@ fn is_max(arr:&Vec<Vec<u32>>){
             }
         }
         println!("{}",visible_trees)
+        
+        2nd Part---->
+        */
+    
+        let mut highest_score  = 0;
+    for v in 1..(arr.len()-1){
+        for j in  1..(arr.len()-1){
+            let mut score = 1;
+            let mut right = 0;
+            //check right 
+            for k in j+1..99{
+                if arr[v][j]<=arr[v][k]{
+                    right+=1;
+                    break;
+                }else{
+                    right+=1;
+                }
+            }
+            println!("Right :{}",right);
+            let mut left = 0;
+
+            for b in (0..j).rev(){
+                if arr[v][j]<=arr[v][b]{
+                    left += 1;
+                    break;
+                }else{
+                    left+=1;
+                }
+            }
+            println!("Left {}",left);
+
+            let mut top = 0;
+
+            for z in (0..v).rev(){
+                if arr[v][j]<=arr[z][j]{
+                    top += 1;
+                    break;
+                }else{
+                    top+=1;
+                }
+            }
+            println!("Top {}",top);
+
+            let mut bottom = 0;
+            for d in v+1..99{
+                if arr[v][j] <= arr[d][j]{
+                    bottom += 1;
+                    break;
+                }else{
+                    bottom+=1;
+                }
+            }
+            println!("Bottom {} Element:{}",bottom,arr[v][j]);
+
+            score = bottom*top*left*right;
+            if score>highest_score{
+                highest_score = score;
+            }
+            }
+        }
+        println!("{}",highest_score)
+    
+    
 
 }
 
